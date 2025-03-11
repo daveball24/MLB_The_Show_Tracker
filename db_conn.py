@@ -10,50 +10,51 @@ def connect_to_db():
         password='ChicagoBearsSP24!',
         port='5432'
     )
+    print("Database connection successful!")
     return conn
 
 def create_user_table():
-    conn = connect_to_db()
+    try:
+        conn = connect_to_db()
+        cur = conn.cursor()
 
-    cur = conn.cursor()
+        create_table_query = """
+        CREATE TABLE IF NOT EXISTS users (
+        user_id INT PRIMARY KEY,
+        name VARCHAR(50) NOT NULL
+        );
+        """
 
-    create_table_query = """
-    CREATE TABLE IF NOT EXISTS users (
-    user_id INT PRIMARY KEY,
-    name VARCHAR(50) NOT NULL
-    );
-    """
-
-    cur.execute(create_table_query)
-
-    conn.commit()
-
-    cur.close()
-    conn.close()
-
-    print("Users table created successfully.")
+        cur.execute(create_table_query)
+        conn.commit()
+        print("Users table created successfully.")
+        
+        cur.close()
+        conn.close()
+    except Exception as e:
+        print(f"Error creating table: {e}")
 
 def example_query():
-    conn = connect_to_db()
-    cur = conn.cursor()
-
-    # Fixed typo: executre → execute
-    cur.execute("SELECT * FROM users LIMIT 5")  # Also fixed table name case: Users → users
-
-    rows = cur.fetchall()
-    for row in rows:
-        # Fixed: print(rows) → print(row)
-        print(row)
-
-    cur.close()
-    conn.close()
-
-# Added function calls to make the script do something
-if __name__ == "__main__":
     try:
-        create_user_table()
-        example_query()
+        conn = connect_to_db()
+        cur = conn.cursor()
+
+        cur.execute("SELECT * FROM users LIMIT 5")
+
+        rows = cur.fetchall()
+        if rows:
+            for row in rows:
+                print(row)
+        else:
+            print("No data found in users table.")
+
+        cur.close()
+        conn.close()
     except Exception as e:
-        print(f"An error occurred: {e}")
+        print(f"Error querying table: {e}")
+
+# Make sure these functions are called
+create_user_table()
+example_query()
 
 print("Script finished...")
