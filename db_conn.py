@@ -4,11 +4,11 @@ print("Script starting...")
 
 def connect_to_db():
     conn = psycopg2.connect(
-        host = 'mlb-the-show-db.clw2io0soo2o.us-east-2.rds.amazonaws.com',
-        database = 'mlb-the-show-db',
-        user = 'skeebo',
-        password = 'ChicagoBearsSP24!',
-        port = '5432'
+        host='mlb-the-show-db.clw2io0soo2o.us-east-2.rds.amazonaws.com',
+        database='mlb-the-show-db',
+        user='skeebo',
+        password='ChicagoBearsSP24!',
+        port='5432'
     )
     return conn
 
@@ -37,14 +37,23 @@ def example_query():
     conn = connect_to_db()
     cur = conn.cursor()
 
-    cur.executre("SELECT * FROM Users LIMIT 5")
+    # Fixed typo: executre → execute
+    cur.execute("SELECT * FROM users LIMIT 5")  # Also fixed table name case: Users → users
 
     rows = cur.fetchall()
     for row in rows:
-        print(rows)
+        # Fixed: print(rows) → print(row)
+        print(row)
 
     cur.close()
     conn.close()
 
+# Added function calls to make the script do something
+if __name__ == "__main__":
+    try:
+        create_user_table()
+        example_query()
+    except Exception as e:
+        print(f"An error occurred: {e}")
 
 print("Script finished...")
