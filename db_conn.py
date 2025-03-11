@@ -1,5 +1,7 @@
 import psycopg2
 
+print("Script starting...")
+
 def connect_to_db():
     conn = psycopg2.connect(
         host = 'mlb-the-show-db.clw2io0soo2o.us-east-2.rds.amazonaws.com',
@@ -43,3 +45,6 @@ def example_query():
 
     cur.close()
     conn.close()
+
+
+print("Script finished...")
