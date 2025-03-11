@@ -35,7 +35,7 @@ def example_query():
     conn = connect_to_db()
     cur = conn.cursor()
 
-    cur.executre("SELECT * FROM your_table LIMIT 5")
+    cur.executre("SELECT * FROM Users LIMIT 5")
 
     rows = cur.fetchall()
     for row in rows:
